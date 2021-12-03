@@ -8,6 +8,31 @@ const { writeFile } = require('fs');
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.use(express.json());
+app.get('/outlets/:outlets/state', (req, res) => {
+  const { headers, method, params: { outlets } } = req;
+  const url = `http://201.182.226.142:5000/restapi/relay/outlets/${outlets}/state`;
+  const options = {
+    headers,
+    method
+  };
+  fetch(url, options)
+    .then(response => response.json())
+    .then(data => res.json(data))
+    .catch(() => res.status(500).end());
+});
+app.put('/outlets/:outlets/state', (req, res) => {
+  const { body, headers, method, params: { outlets } } = req;
+  const url = `http://201.182.226.142:5000/restapi/relay/outlets/${outlets}/state`;
+  const options = {
+    body,
+    headers,
+    method
+  };
+  fetch(url, options)
+    .then(response => response.text())
+    .then(text => res.send(text))
+    .catch(() => res.status(500).end());
+});
 app.post('/payload', async (req, res) => {
   const { body = {} } = req;
   const { env } = process;
