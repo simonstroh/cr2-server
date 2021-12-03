@@ -15,15 +15,15 @@ app.post('/payload', async (req, res) => {
     const { after: ref } = body;
     const owner = env.GITHUB_OWNER, repo = env.GITHUB_REPO;
     const options = { owner, repo, ref };
-    const index = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+    const { data: index } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
       ...options,
       path: 'index.html'
     });
-    const js = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+    const { data: js } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
       ...options,
       path: '/js'
     });
-    const css = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+    const { data: css } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
       ...options,
       path: '/css'
     });
