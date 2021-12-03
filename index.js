@@ -29,23 +29,23 @@ app.post('/payload', async (req, res) => {
     });
     (() => {
       let { content, encoding, name } = index;
-      fs.writeFile(path.join(__dirname, 'build', name), content, {
-        encoding
+      fs.writeFile(path.join(__dirname, 'build', name), content, encoding, () => {
+
       });
     })();
     if (Array.isArray(js)) {
       js.forEach(script => {
         let { content, encoding, name } = script;
-        fs.writeFile(path.join(__dirname, 'build', 'js', name), content, {
-          encoding
+        fs.writeFile(path.join(__dirname, 'build', 'js', name), content, encoding, () => {
+
         });
       });
     }
     if (Array.isArray(css)) {
       css.forEach(style => {
         let { content, encoding, name } = style;
-        fs.writeFile(path.join(__dirname, 'build', 'css', name), content, {
-          encoding
+        fs.writeFile(path.join(__dirname, 'build', 'css', name), content, encoding, () => {
+          
         });
       });
     }
