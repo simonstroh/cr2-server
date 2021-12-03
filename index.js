@@ -15,15 +15,15 @@ app.post('/payload', async (req, res) => {
     const { after: ref } = body;
     const owner = env.GITHUB_OWNER, repo = env.GITHUB_REPO;
     const options = { owner, repo, ref };
-    const { data: index } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+    const index = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
       ...options,
       path: 'index.html'
     });
-    const { data: js } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+    const js = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
       ...options,
       path: '/js'
     });
-    const { data: css } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+    const css = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
       ...options,
       path: '/css'
     });
@@ -45,7 +45,7 @@ app.post('/payload', async (req, res) => {
       css.forEach(style => {
         let { content, encoding, name } = style;
         fs.writeFile(path.join(__dirname, 'build', 'css', name), content, encoding, () => {
-          
+
         });
       });
     }
