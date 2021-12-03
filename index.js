@@ -29,17 +29,17 @@ app.post('/payload', async (req, res) => {
     });
     (() => {
       let { content, encoding, name } = index;
-      let path = path.join(__dirname, 'build', name);
-      console.log(path, name);
-      writeFile(path, content, encoding, () => {
+      let filename = path.join(__dirname, 'build', name);
+      console.log(filename, name);
+      writeFile(filename, content, encoding, () => {
 
       });
     })();
     if (Array.isArray(js)) {
       js.forEach(script => {
         let { content, encoding, name } = script;
-        let path = path.join(__dirname, 'build', 'js', name);
-        writeFile(path, content, encoding, () => {
+        let filename = path.join(__dirname, 'build', 'js', name);
+        writeFile(filename, content, encoding, () => {
 
         });
       });
@@ -47,8 +47,8 @@ app.post('/payload', async (req, res) => {
     if (Array.isArray(css)) {
       css.forEach(style => {
         let { content, encoding, name } = style;
-        let path = path.join(__dirname, 'build', 'css', name);
-        writeFile(path, content, encoding, () => {
+        let filename = path.join(__dirname, 'build', 'css', name);
+        writeFile(filename, content, encoding, () => {
 
         });
       });
