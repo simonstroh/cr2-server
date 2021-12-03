@@ -36,8 +36,12 @@ app.post('/payload', async (req, res) => {
       });
     })();
     if (Array.isArray(js)) {
-      js.forEach(script => {
-        let { content, encoding, name } = script;
+      js.forEach(async script => {
+        let { path } = script;
+        let { data: { content, encoding, name } } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+          ...options,
+          path
+        });
         let filename = path.join(__dirname, 'build', 'js', name);
         writeFile(filename, content, encoding, () => {
 
@@ -46,7 +50,11 @@ app.post('/payload', async (req, res) => {
     }
     if (Array.isArray(css)) {
       css.forEach(style => {
-        let { content, encoding, name } = style;
+        let { path } = style;
+        let { data: { content, encoding, name } } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+          ...options,
+          path
+        });
         let filename = path.join(__dirname, 'build', 'css', name);
         writeFile(filename, content, encoding, () => {
 
