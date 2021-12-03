@@ -49,7 +49,7 @@ app.post('/payload', async (req, res) => {
       });
     }
     if (Array.isArray(css)) {
-      css.forEach(style => {
+      css.forEach(async style => {
         let { path } = style;
         let { data: { content, encoding, name } } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
           ...options,
