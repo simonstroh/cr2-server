@@ -3,7 +3,7 @@ const { Octokit } = require('@octokit/core');
 const app = express();
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 const path = require('path');
-const fs = require('fs');
+const { writeFile } = require('fs');
 
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -29,14 +29,17 @@ app.post('/payload', async (req, res) => {
     });
     (() => {
       let { content, encoding, name } = index;
-      fs.writeFile(path.join(__dirname, 'build', name), content, encoding, () => {
+      let path = path.join(__dirname, 'build', name);
+      console.log(path, name);
+      writeFile(path, content, encoding, () => {
 
       });
     })();
     if (Array.isArray(js)) {
       js.forEach(script => {
         let { content, encoding, name } = script;
-        fs.writeFile(path.join(__dirname, 'build', 'js', name), content, encoding, () => {
+        let path = path.join(__dirname, 'build', 'js', name);
+        writeFile(path, content, encoding, () => {
 
         });
       });
@@ -44,7 +47,8 @@ app.post('/payload', async (req, res) => {
     if (Array.isArray(css)) {
       css.forEach(style => {
         let { content, encoding, name } = style;
-        fs.writeFile(path.join(__dirname, 'build', 'css', name), content, encoding, () => {
+        let path = path.join(__dirname, 'build', 'css', name);
+        writeFile(path, content, encoding, () => {
 
         });
       });
