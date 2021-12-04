@@ -13,7 +13,7 @@ app.get('/outlets/:outlets/state', (req, res) => {
   const options = {
     hostname: '201.182.226.142',
     port: '5000',
-    path: `/restapi/relay/outlets/${outlets}/state`,
+    path: `/restapi/relay/outlets/${outlets}/state/`,
     method,
     headers: {
       authorization: headers.authorization,
@@ -36,7 +36,7 @@ app.put('/outlets/:outlets/state', (req, res) => {
   const options = {
     hostname: '201.182.226.142',
     port: '5000',
-    path: `/restapi/relay/outlets/${outlets}/state`,
+    path: `/restapi/relay/outlets/${outlets}/state/`,
     method,
     headers: {
       authorization: headers.authorization,
