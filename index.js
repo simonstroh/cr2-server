@@ -21,17 +21,17 @@ app.get('/outlets/:outlets/state', (req, res) => {
     }
   };
   const request = http.request(options, response => {
-    response.on('data', (data) => {
+    response.on('data', data => {
       res.json(JSON.parse(data));
     });
   });
-  request.on('error', (err) => {
+  request.on('error', err => {
     console.error(err);
     res.status(500).end();
   });
   request.end();
 });
-app.put('/outlets/:outlets/state', (req, res) => {
+app.put('/outlets/:outlets/state', express.text(), (req, res) => {
   const { body, headers, method, params: { outlets } } = req;
   const options = {
     hostname: '201.182.226.142',
@@ -44,11 +44,11 @@ app.put('/outlets/:outlets/state', (req, res) => {
     }
   };
   const request = http.request(options, response => {
-    response.on('data', (data) => {
+    response.on('data', data => {
       res.send(data);
     });
   });
-  request.on('error', (err) => {
+  request.on('error', err => {
     console.error(err);
     res.status(500).end();
   });
