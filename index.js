@@ -66,7 +66,6 @@ app.post('/payload', express.json(), async (req, res) => {
     (() => {
       let { content, encoding, name } = index;
       let filename = path.join(__dirname, 'build', name);
-      console.log(filename, name);
       writeFile(filename, content, encoding, () => {});
     })();
     if (Array.isArray(js)) {
