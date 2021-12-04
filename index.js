@@ -37,7 +37,7 @@ app.put('/outlets/:outlets/state', express.text(), (req, res) => {
   const hostname = '201.182.226.142', port = '5000';
   const path = `/restapi/relay/outlets/${outlets}/state/`;
   const url = `http://${hostname}:${port}${path}`;
-  axios.put(url, body)
+  axios.request(url, body, { headers, method })
     .then(response => res.send(response))
     .catch(err => {
       console.error(err);
