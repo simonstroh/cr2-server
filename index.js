@@ -21,7 +21,8 @@ app.get('/outlets/:outlets/state', (req, res) => {
   request.on('data', (data) => {
     res.json(JSON.parse(data));
   });
-  request.on('error', () => {
+  request.on('error', (err) => {
+    console.error(err);
     res.status(500).end();
   });
   request.end();
@@ -39,7 +40,8 @@ app.put('/outlets/:outlets/state', (req, res) => {
   request.on('data', (data) => {
     res.send(data);
   });
-  request.on('error', () => {
+  request.on('error', (err) => {
+    console.error(err);
     res.status(500).end();
   });
   request.write(new TextEncoder().encode(body));
