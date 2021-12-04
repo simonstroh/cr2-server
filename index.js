@@ -8,7 +8,6 @@ const { writeFile } = require('fs');
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.use(express.json());
 app.get('/outlets/:outlets/state', (req, res) => {
   const { headers, method, params: { outlets } } = req;
   const options = {
@@ -43,12 +42,10 @@ app.put('/outlets/:outlets/state', (req, res) => {
   request.on('error', () => {
     res.status(500).end();
   });
-  request.write(new TextEncoder().encode(
-    JSON.stringify(body)
-  ));
+  request.write(new TextEncoder().encode(body));
   request.end();
 });
-app.post('/payload', async (req, res) => {
+app.post('/payload', express.json(), async (req, res) => {
   const { body = {} } = req;
   const { env } = process;
   if (body.hasOwnProperty('commits')) {
