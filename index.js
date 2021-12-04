@@ -20,9 +20,10 @@ app.get('/outlets/:outlets/state', (req, res) => {
       'content-type': headers['content-type']
     }
   };
-  const request = http.request(options);
-  request.on('data', (data) => {
-    res.json(JSON.parse(data));
+  const request = http.request(options, response => {
+    response.on('data', (data) => {
+      res.json(JSON.parse(data));
+    });
   });
   request.on('error', (err) => {
     console.error(err);
@@ -42,9 +43,10 @@ app.put('/outlets/:outlets/state', (req, res) => {
       'content-type': headers['content-type']
     }
   };
-  const request = http.request(options);
-  request.on('data', (data) => {
-    res.send(data);
+  const request = http.request(options, response => {
+    response.on('data', (data) => {
+      res.send(data);
+    });
   });
   request.on('error', (err) => {
     console.error(err);
