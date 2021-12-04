@@ -3,6 +3,7 @@ const { Octokit } = require('@octokit/core');
 const app = express();
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 const path = require('path');
+const http = require('http');
 const { writeFile } = require('fs');
 
 app.use(express.static(path.join(__dirname, 'build')));
@@ -10,28 +11,42 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json());
 app.get('/outlets/:outlets/state', (req, res) => {
   const { headers, method, params: { outlets } } = req;
-  const url = `http://201.182.226.142:5000/restapi/relay/outlets/${outlets}/state`;
   const options = {
-    headers,
-    method
+    hostname: '201.182.226.142',
+    port: '5000',
+    path: `/restapi/relay/outlets/${outlets}/state`,
+    method,
+    headers
   };
-  fetch(url, options)
-    .then(response => response.json())
-    .then(data => res.json(data))
-    .catch(() => res.status(500).end());
+  const request = http.request(options);
+  request.on('data', (data) => {
+    res.json(JSON.parse(data));
+  });
+  request.on('error', () => {
+    res.status(500).end();
+  });
+  request.end();
 });
 app.put('/outlets/:outlets/state', (req, res) => {
   const { body, headers, method, params: { outlets } } = req;
-  const url = `http://201.182.226.142:5000/restapi/relay/outlets/${outlets}/state`;
   const options = {
-    body,
-    headers,
-    method
+    hostname: '201.182.226.142',
+    port: '5000',
+    path: `/restapi/relay/outlets/${outlets}/state`,
+    method,
+    headers
   };
-  fetch(url, options)
-    .then(response => response.text())
-    .then(text => res.send(text))
-    .catch(() => res.status(500).end());
+  const request = http.request(options);
+  request.on('data', (data) => {
+    res.send(data);
+  });
+  request.on('error', () => {
+    res.status(500).end();
+  });
+  request.write(new TextEncoder().encode(
+    JSON.stringify(body)
+  ));
+  request.end();
 });
 app.post('/payload', async (req, res) => {
   const { body = {} } = req;
