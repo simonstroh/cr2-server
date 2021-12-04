@@ -3,7 +3,7 @@ const { Octokit } = require('@octokit/core');
 const app = express();
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 const path = require('path');
-const http = require('http');
+const https = require('https');
 const { writeFile } = require('fs');
 
 app.use(express.static(path.join(__dirname, 'build')));
@@ -17,7 +17,7 @@ app.get('/outlets/:outlets/state', (req, res) => {
     method,
     headers
   };
-  const request = http.request(options);
+  const request = https.request(options);
   request.on('data', (data) => {
     res.json(JSON.parse(data));
   });
@@ -36,7 +36,7 @@ app.put('/outlets/:outlets/state', (req, res) => {
     method,
     headers
   };
-  const request = http.request(options);
+  const request = https.request(options);
   request.on('data', (data) => {
     res.send(data);
   });
