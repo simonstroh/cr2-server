@@ -23,7 +23,7 @@ app.get('/outlets/:outlets/state', (req, res) => {
   };
   const request = http.request(options, response => {
     response.on('data', data => {
-      res.json(data);
+      res.send(data);
     });
   });
   request.on('error', err => {
@@ -38,7 +38,7 @@ app.put('/outlets/:outlets/state', express.text(), (req, res) => {
   const path = `/restapi/relay/outlets/${outlets}/state/`;
   const url = `http://${hostname}:${port}${path}`;
   axios.request({ url, method, data: body, headers })
-    .then(response => res.send(response))
+    .then(response => res.send(response.data))
     .catch(err => {
       console.error(err);
       res.status(500).end();
