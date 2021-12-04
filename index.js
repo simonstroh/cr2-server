@@ -3,7 +3,7 @@ const { Octokit } = require('@octokit/core');
 const app = express();
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 const path = require('path');
-const http = require('http');
+const https = require('https');
 const axios = require('axios');
 const { writeFile } = require('fs');
 
@@ -21,7 +21,7 @@ app.get('/outlets/:outlets/state', (req, res) => {
       'content-type': headers['content-type']
     }
   };
-  const request = http.request(options, response => {
+  const request = https.request(options, response => {
     response.on('data', data => {
       res.send(data);
     });
@@ -36,7 +36,7 @@ app.put('/outlets/:outlets/state', express.text(), (req, res) => {
   const { body, headers, method, params: { outlets } } = req;
   const hostname = '201.182.226.142', port = '5000';
   const path = `/restapi/relay/outlets/${outlets}/state/`;
-  const url = `http://${hostname}:${port}${path}`;
+  const url = `https://${hostname}:${port}${path}`;
   axios.request({ url, method, data: body, headers })
     .then(response => res.send(response.data))
     .catch(err => {
