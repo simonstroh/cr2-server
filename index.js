@@ -40,7 +40,7 @@ app.put('/outlets/:outlets/state', express.text(), (req, res) => {
     method,
     headers: {
       authorization: headers.authorization,
-      'content-type': headers['content-type']
+      'content-type': 'application/json'
     }
   };
   const request = http.request(options, response => {
