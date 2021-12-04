@@ -23,7 +23,7 @@ app.get('/outlets/:outlets/state', (req, res) => {
   };
   const request = http.request(options, response => {
     response.on('data', data => {
-      res.json(JSON.parse(data));
+      res.json(data);
     });
   });
   request.on('error', err => {
@@ -37,41 +37,12 @@ app.put('/outlets/:outlets/state', express.text(), (req, res) => {
   const hostname = '201.182.226.142', port = '5000';
   const path = `/restapi/relay/outlets/${outlets}/state/`;
   const url = `http://${hostname}:${port}${path}`;
-  axios.request({
-    url,
-    method,
-    data: body,
-    headers: {
-      authorization: headers.authorization,
-      'content-type': 'application/json'
-    }
-  })
+  axios.request({ url, method, data: body, headers })
     .then(response => res.send(response))
     .catch(err => {
       console.error(err);
       res.status(500).end();
     });
-  // const options = {
-  //   hostname: '201.182.226.142',
-  //   port: '5000',
-  //   path: `/restapi/relay/outlets/${outlets}/state/`,
-  //   method,
-  //   headers: {
-  //     authorization: headers.authorization,
-  //     'content-type': 'application/json'
-  //   }
-  // };
-  // const request = http.request(options, response => {
-  //   response.on('data', data => {
-  //     res.send(data);
-  //   });
-  // });
-  // request.on('error', err => {
-  //   console.error(err);
-  //   res.status(500).end();
-  // });
-  // request.write(new TextEncoder().encode(body));
-  // request.end();
 });
 app.post('/payload', express.json(), async (req, res) => {
   const { body = {} } = req;
@@ -96,9 +67,7 @@ app.post('/payload', express.json(), async (req, res) => {
       let { content, encoding, name } = index;
       let filename = path.join(__dirname, 'build', name);
       console.log(filename, name);
-      writeFile(filename, content, encoding, () => {
-
-      });
+      writeFile(filename, content, encoding, () => {});
     })();
     if (Array.isArray(js)) {
       js.forEach(async script => {
@@ -108,9 +77,7 @@ app.post('/payload', express.json(), async (req, res) => {
           path: pathname
         });
         let filename = path.join(__dirname, 'build', 'js', name);
-        writeFile(filename, content, encoding, () => {
-
-        });
+        writeFile(filename, content, encoding, () => {});
       });
     }
     if (Array.isArray(css)) {
@@ -121,9 +88,7 @@ app.post('/payload', express.json(), async (req, res) => {
           path: pathname
         });
         let filename = path.join(__dirname, 'build', 'css', name);
-        writeFile(filename, content, encoding, () => {
-
-        });
+        writeFile(filename, content, encoding, () => {});
       });
     }
   }
